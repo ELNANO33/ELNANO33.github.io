@@ -9,6 +9,12 @@
       font-family: Arial, sans-serif;
     }
 
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .box {
       border: 1px solid #555555;
       padding: 10px;
@@ -21,28 +27,34 @@
       padding: 10px;
       border: 1px solid black;
     }
+
     .boxF1 {
-        background-image: url('https://i0.wp.com/jungle-team.com/wp-content/uploads/2021/02/daznformula.png?ssl=1');
-        background-size: 35% 100%;
-        background-repeat: no-repeat;
-      }
+      background-image: url('https://i0.wp.com/jungle-team.com/wp-content/uploads/2021/02/daznformula.png?ssl=1');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: right;
+    }
 
     .boxLIGA {
-        background-image: url('https://assets.laliga.com/assets/logos/laliga-h-negativo-monocolor/laliga-h-negativo-monocolor-300x300.png');
-
-        background-repeat: no-repeat;
+      background-image: url('https://assets.laliga.com/assets/logos/laliga-h-negativo-monocolor/laliga-h-negativo-monocolor-300x300.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: right;
     }
 
     .boxLIGADAZN {
-        background-image: url('https://i0.wp.com/jungle-team.com/wp-content/uploads/2022/07/dazn-laliganuevo.png');
-        background-size: 35% 100%;
-        background-repeat: no-repeat;
+      background-image: url('https://i0.wp.com/jungle-team.com/wp-content/uploads/2022/07/dazn-laliganuevo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: right;
     }
 
     .boxCHAMPIONS {
-        background-image: url('https://www.fifplay.com/img/public/ucl-logo.png');
-        background-repeat: no-repeat;
-        background-size: 23% 99%;
+      background-image: url('https://www.fifplay.com/img/public/ucl-logo.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: right;
+  
     }
 
     h2 {
@@ -65,76 +77,94 @@
 
     button:hover {
       background-color: #0056b3;
-      
+    }
+
+    /* Media queries */
+    @media (max-width: 768px) {
+      .container {
+        align-items: center;
+      }
+
+      .box {
+        width: 100%;
+      }
+
+      .boxF1,
+      .boxLIGA,
+      .boxLIGADAZN,
+      .boxCHAMPIONS {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
     <div class="box boxF1">
       <h2>DAZN F1</h2>
       <p>MULTI VIEW</p>
       <button onclick="reproducir('acestream://dca8b79aadd3763786c255746b7712faa7db55e6')">Reproducir</button>
     </div>
-  
+
     <div class="box boxF1">
       <h2>DAZN F1</h2>
       <p>HD</p>
       <button onclick="reproducir('acestream://5789ca155323664edd293b848606688edf803f4d')">Reproducir</button>
     </div>
-  
+
     <div class="box boxF1">
       <h2>DAZN F1</h2>
       <p>HD</p>
       <button onclick="reproducir('acestream://9dad717d99b29a05672166258a77c25b57713dd5')">Reproducir</button>
     </div>
-  
+
     <div class="box boxLIGA">
       <h2>M. LIGA</h2>
       <p>FHD</p>
       <button onclick="reproducir('acestream://1e0214a06000e6f4847dd30cdc2fb839527be862')">Reproducir</button>
     </div>
-  
+
     <div class="box boxLIGA">
       <h2>M. LIGA</h2>
       <p>HD</p>
       <button onclick="reproducir('acestream://5c668adaf86ed6af2488e28d9f3a4e3b0e909664')">Reproducir</button>
     </div>
-  
+
     <div class="box boxLIGADAZN">
       <h2>DAZN LIGA</h2>
       <p>FHD</p>
       <button onclick="reproducir('acestream://0b01aa547ffe11ce2042bfe443abafb3ea17e5ff')">Reproducir</button>
     </div>
-  
+
     <div class="box boxLIGADAZN">
       <h2>DAZN LIGA</h2>
       <p>HD</p>
       <button onclick="reproducir('acestream://05b9cb49947d3b78bbc66671c6e16ba0ae3b60b6')">Reproducir</button>
     </div>
-  
+
     <div class="box boxCHAMPIONS">
       <h2>M.L. Campeones</h2>
       <p>FHD</p>
       <button onclick="reproducir('acestream://2bac25f323be1de8208d6554337c2c8256bc32bc')">Reproducir</button>
     </div>
-  
+
     <div class="box boxCHAMPIONS">
       <h2>M.L. Campeones</h2>
       <p>FHD</p>
       <button onclick="reproducir('acestream://045718bad2ddb4f03b1a420754a97a23ad8b493b')">Reproducir</button>
     </div>
-  
+
     <div class="box boxCHAMPIONS">
       <h2>M.L. Campeones</h2>
       <p>FHD</p>
       <button onclick="reproducir('acestream://444b51b2606cba9efb1b4ff56bf652cbc02a5f47')">Reproducir</button>
     </div>
-  
-    <script>
-      function reproducir(url) {
-        window.location.href = url;
-      }
-    </script>
-  </body>
-  
-  </html>
+  </div>
+
+  <script>
+    function reproducir(url) {
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
