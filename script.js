@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const reiniciarBtn = document.getElementById('reiniciar-links');
-    const fileInput = document.getElementById('m3u-file');
     const canalesSection = document.getElementById('canales');
-    const M3U_URL = 'https://proxy.zeronet.dev/1H3KoazXt2gCJgeD8673eFvQYXG7cbRddU/lista-ace.m3u';
 
     // Parsear el archivo M3U
     function parseM3U(text) {
@@ -183,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     select.remove();
                 }
             });
-        }, { once: true }); // Evita múltiples listeners
+        }, { once: true });
     }
 
     // Copiar al portapapeles
@@ -198,36 +196,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Abrir el enlace para descargar el archivo M3U
-    function openM3UUrl() {
-        window.open(M3U_URL, '_blank');
-        setTimeout(() => {
-            alert('Por favor, descarga el archivo M3U y luego arrástralo a esta página o selecciónalo manualmente.');
-            fileInput.click();
-        }, 1000);
+    // Procesar texto M3U
+    async function processM3UText(text) {
+        const { canales, epgUrl } = parseM3U(text);
+        let epg = {};
+        if (epgUrl) {
+            epg = await loadEPG(epgUrl);
+        }
+        mostrarCanales(canales, epg);
     }
 
-    // Manejar carga manual del archivo
-    fileInput.addEventListener('change', async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            processFile(file);
+    // Cargar M3U automáticamente desde el directorio raíz
+    async function loadM3U() {
+        try {
+            const response = await fetch('./lista-ace.m3u');
+            if (!response.ok) {
+                throw new Error('No se pudo cargar el archivo M3U');
+            }
+            const text = await response.text();
+            await processM3UText(text);
+        } catch (error) {
+            console.error('Error al cargar M3U:', error);
+            alert('No se pudo cargar el archivo M3U. Asegúrate de que "lista-ace.m3u" esté en el directorio raíz.');
         }
-    });
+    }
 
-    // Procesar archivo M3U
+    // Procesar archivo M3U (para arrastrar y soltar)
     async function processFile(file) {
         if (!file.name.endsWith('.m3u')) {
-            alert('Por favor, selecciona o arrastra un archivo M3U válido.');
+            alert('Por favor, arrastra un archivo M3U válido.');
             return;
         }
         const reader = new FileReader();
         reader.onload = async (e) => {
             const text = e.target.result;
-            const { canales, epgUrl } = parseM3U(text);
-            let epg = {};
-            if (epgUrl) epg = await loadEPG(epgUrl);
-            mostrarCanales(canales, epg);
+            await processM3UText(text);
         };
         reader.readAsText(file);
     }
@@ -244,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('dragleave', (e) => {
         e.preventDefault();
-        if (e.relatedTarget === null) { // Solo quitar la clase si se sale del documento
+        if (e.relatedTarget === null) {
             document.body.classList.remove('dragover');
         }
     });
@@ -258,8 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Evento del botón "Descargar M3U"
+    // Evento del botón "Recargar M3U"
     reiniciarBtn.addEventListener('click', () => {
-        openM3UUrl();
+        loadM3U();
     });
+
+    // Cargar M3U al inicio
+    loadM3U();
 });
