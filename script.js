@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 canalDiv.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (canalData.opciones.length === 1) {
-                        copyToClipboard(canalData.opciones[0].enlace);
+                        window.open(canalData.opciones[0].enlace, '_blank');
                     } else {
                         const existingSelect = canalDiv.querySelector('.enlace-select');
                         if (existingSelect) return;
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const select = document.createElement('select');
                         select.className = 'enlace-select';
                         const defaultOption = document.createElement('option');
-                        defaultOption.textContent = 'Selecciona un enlace';
+                        defaultOption.textContent = 'Selecciona un enlace para abrir';
                         defaultOption.disabled = true;
                         defaultOption.selected = true;
                         select.appendChild(defaultOption);
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
 
                         select.addEventListener('change', () => {
-                            copyToClipboard(select.value);
+                            window.open(select.value, '_blank');
                         });
 
                         canalDiv.appendChild(select);
@@ -182,18 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { once: true });
-    }
-
-    // Copiar al portapapeles
-    function copyToClipboard(text) {
-        if (text) {
-            navigator.clipboard.writeText(text)
-                .then(() => alert('Enlace copiado al portapapeles'))
-                .catch(err => {
-                    console.error('Error al copiar:', err);
-                    alert('No se pudo copiar el enlace');
-                });
-        }
     }
 
     // Procesar texto M3U
